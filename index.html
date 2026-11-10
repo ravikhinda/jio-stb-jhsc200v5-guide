@@ -40,7 +40,7 @@ footer{max-width:900px;margin:auto;padding:0 18px 40px;color:var(--muted);font-s
 <p class="subtitle">Model: JHSC200v5</p>
 </div></header>
 <main class="container">
-<div class="notice"><strong>Important:</strong> This page reproduces the supplied guide in English. Follow device-specific instructions carefully and understand the risks before changing network, firewall, or STB settings.</div>
+<div class="notice"><strong>Disclaimer:</strong> I am not a developer or an Android expert. I am just a regular Jio STB user sharing my personal experience and the method that worked for me. I created this guide to help other users who may be trying to set up their Jio STB. Everything shared here is based on my own experience, not professional expertise. The results may vary depending on the STB model and software version. Please follow the steps carefully and proceed at your own risk.</div>
 
 <section class="step">
 <h2>Step-1: Install Prerequisites on Your PC</h2>
@@ -230,6 +230,23 @@ footer{max-width:900px;margin:auto;padding:0 18px 40px;color:var(--muted);font-s
 </section>
 
 <section class="step">
+<h2>Step-14: Edit and Run the Post-Setup Script</h2>
+<p>To complete the post-setup process, we need to run a script. However, before running it, we must enter the actual IP address of our Jio STB because the script already contains a default IP address.</p>
+<ol>
+<li>Go back to the main <code>sideload-jiostb</code> folder on your laptop.</li>
+<li>Open the folder named <code>jhs</code>.</li>
+<li>Find the script file named <code>jhs_stage1.sh</code>.</li>
+<li>Right-click on it and open it with Notepad.</li>
+<li>Inside the file, you will find <code>STB_IP</code>.</li>
+<li>Replace the default IP address with the actual IP address of your Jio STB.</li>
+<li>Save the file using <code>Ctrl + S</code> and close Notepad.</li>
+</ol>
+<p>Now, return to your Git Bash terminal (where the main folder was opened) and enter the following command:</p>
+<pre><code>./jhs/jhs_stage1.sh --post-setup</code></pre>
+<p>After running this command, your post-setup will be completed successfully, and the entire jailbreak process will be finished!</p>
+</section>
+
+<section class="step">
 <h2>Step-15: Teardown and Restore Everything to Normal</h2>
 <p>Once the ADB connection is established and your jailbreak setup is complete, it is important to restore everything to its normal state.</p>
 <h3>1. Stop the Proxy Script</h3>
@@ -246,24 +263,7 @@ footer{max-width:900px;margin:auto;padding:0 18px 40px;color:var(--muted);font-s
 <ol><li>Press <code>Win + R</code>.</li><li>Type <code>firewall.cpl</code>.</li><li>Open <strong>Turn Windows Defender Firewall on or off</strong>.</li><li>Turn Windows Defender Firewall back ON.</li></ol>
 <h3>5. Verification</h3>
 <p>Your STB and laptop should now have their Internet connections working again.</p>
-</section>
-
-<section class="step">
-<h2>Step-15: Edit and Run the Post-Setup Script</h2>
-<p>To complete the post-setup process, we need to run a script. However, before running it, we must enter the actual IP address of our Jio STB because the script already contains a default IP address.</p>
-<ol>
-<li>Go back to the main <code>sideload-jiostb</code> folder on your laptop.</li>
-<li>Open the folder named <code>jhs</code>.</li>
-<li>Find the script file named <code>jhs_stage1.sh</code>.</li>
-<li>Right-click on it and open it with Notepad.</li>
-<li>Inside the file, you will find <code>STB_IP</code>.</li>
-<li>Replace the default IP address with the actual IP address of your Jio STB.</li>
-<li>Save the file using <code>Ctrl + S</code> and close Notepad.</li>
-</ol>
-<p>Now, return to your Git Bash terminal (where the main folder was opened) and enter the following command:</p>
-<pre><code>./jhs/jhs_stage1.sh --post-setup</code></pre>
-<p>After running this command, your post-setup will be completed successfully, and the entire jailbreak process will be finished!</p>
-</section>
+</section>  
 
 <section class="step">
 <h2>Step-16: Install Apps (APK) Through ADB</h2>
