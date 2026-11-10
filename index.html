@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Full guide and personal experience for setting up a Jio STB JHSC200v5 using the sideload-jiostb repository.">
+<title>Jio STB JHSC200v5 – Full Guide</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#131b2e;--panel2:#18233a;--text:#edf2ff;--muted:#aab6cc;--accent:#75b7ff;--line:#2a3853;--code:#080d18}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.7 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+header{padding:54px 20px 38px;background:linear-gradient(135deg,#13294b,#101629 65%);border-bottom:1px solid var(--line)}
+.hero,.container{max-width:900px;margin:auto}
+.eyebrow{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:.78rem}
+h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.15;margin:12px 0}
+.subtitle{color:var(--muted);margin:0}
+.container{padding:28px 18px 70px}
+.notice{background:#332817;border:1px solid #765b2c;color:#ffe8b6;padding:15px 18px;border-radius:12px;margin:0 0 24px}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:18px 0;scroll-margin-top:18px}
+h2{font-size:1.25rem;line-height:1.35;margin:0 0 14px;color:#fff}
+h3{font-size:1rem;margin:18px 0 8px;color:#d8e7ff}
+p{margin:10px 0}
+ul,ol{padding-left:24px}
+li{padding:3px 0}
+a{color:var(--accent);overflow-wrap:anywhere}
+code{background:var(--code);border:1px solid #26344c;border-radius:6px;padding:2px 6px;color:#b9dcff;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;overflow-wrap:anywhere}
+pre{background:var(--code);border:1px solid #26344c;border-radius:10px;padding:13px 15px;overflow-x:auto;color:#b9dcff}
+pre code{border:0;padding:0;background:none}
+.note{background:var(--panel2);border-left:3px solid var(--accent);padding:12px 15px;border-radius:7px;color:#d9e5f8;margin:14px 0}
+hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+footer{max-width:900px;margin:auto;padding:0 18px 40px;color:var(--muted);font-size:.9rem}
+@media(max-width:600px){header{padding:38px 18px 28px}.step{padding:18px 16px;border-radius:12px}.container{padding:18px 12px 48px}}
+@media print{body{background:#fff;color:#111}.step{break-inside:avoid;background:#fff;border:1px solid #bbb}header{background:#fff;color:#111;border-bottom:1px solid #bbb}.subtitle,footer{color:#444}h2,h3{color:#111}a{color:#0645ad}code,pre{background:#f3f3f3;color:#111;border-color:#ccc}.notice,.note{background:#f5f5f5;color:#111;border-color:#999}}
+</style>
+</head>
+<body>
+<header><div class="hero">
+<div class="eyebrow">Full Guide / My Experience</div>
+<h1>How I Jailbroke My Jio STB</h1>
+<p class="subtitle">Model: JHSC200v5</p>
+</div></header>
+<main class="container">
+<div class="notice"><strong>Important:</strong> This page reproduces the supplied guide in English. Follow device-specific instructions carefully and understand the risks before changing network, firewall, or STB settings.</div>
+
+<section class="step">
+<h2>Step-1: Install Prerequisites on Your PC</h2>
+<p>First, download the ZIP file of the repository from this link:</p>
+<p><a href="https://github.com/ilikechocopies/sideload-jiostb">https://github.com/ilikechocopies/sideload-jiostb</a></p>
+<p>Extract it to your PC. Then install the following required tools:</p>
+<ul>
+<li><strong>Docker Desktop:</strong> <a href="https://docs.docker.com/desktop/setup/install/windows-install/">https://docs.docker.com/desktop/setup/install/windows-install/</a></li>
+<li><strong>Python 3:</strong> <a href="https://www.python.org/downloads/">https://www.python.org/downloads/</a></li>
+<li><strong>Technitium DNS:</strong> <a href="https://technitium.com/dns/">https://technitium.com/dns/</a></li>
+<li><strong>Git for Windows:</strong> <a href="https://gitforwindows.org/">https://gitforwindows.org/</a></li>
+</ul>
+</section>
+
+<section class="step">
+<h2>Step-2: Network and Cable Setup</h2>
+<p>Next, I prepared my setup for network pairing:</p>
+<ul>
+<li>Connected the Jio STB to my router using an Ethernet cable.</li>
+<li>Connected my laptop to the Wi-Fi of the same router so that both devices were on the same network.</li>
+</ul>
+</section>
+
+<section class="step">
+<h2>Step-3: Find Your Laptop's IP Address</h2>
+<p>Open CMD on your laptop and enter the following command:</p>
+<pre><code>ipconfig</code></pre>
+<p>Find the IPv4 Address (for example, 192.168.x.x) and note it down.</p>
+<p>We will use this IP address as the DNS server in the upcoming steps.</p>
+</section>
+
+<section class="step">
+<h2>Step-4: Configure DNS on the Jio STB</h2>
+<p>For this, I accessed the hidden Android settings on my STB:</p>
+<ol>
+<li>Download the My Music app from the Jio Store.</li>
+<li>Insert an empty USB flash drive into the STB.</li>
+<li>Open the My Music app.</li>
+<li>Follow this path: <strong>Settings &gt; Safely eject the USB &gt; Internal shared storage &gt; Apps &gt; Open &gt; Network and Internet.</strong></li>
+<li>Here, you will find the Ethernet option. Change its configuration from DHCP to Static.</li>
+</ol>
+<div class="note"><strong>Note:</strong> As soon as you switch to Static, you will need to enter all the values manually. Therefore, I first noted down the STB's default IP address and Gateway. I entered the same IP address and Gateway again. The only change I made was to replace DNS 1 with the laptop's IPv4 address that I noted in Step 3. Finally, save the settings.</div>
+</section>
+
+<section class="step">
+<h2>Step-5: Turn Off Windows Defender Firewall and Isolate the Network (Important)</h2>
+<p>To connect the Jio STB to our laptop instead of the original server, we need to isolate our local network and turn off the firewall. Without these two steps, the further process will fail.</p>
+<h3>1. Disconnect the Internet from Your Router</h3>
+<p>Disconnect the main Internet (WAN/Fiber) cable plugged into the back of your Wi-Fi router so that the router stops receiving an Internet connection.</p>
+<div class="note"><strong>Note:</strong> Your laptop and STB must remain connected to the same router. Only the Internet connection should be disabled so that both devices can communicate with each other over the local network.</div>
+<h3>2. Turn Off Windows Defender Firewall</h3>
+<ol>
+<li>On your laptop, press <code>Win + R</code>.</li>
+<li>Type <code>firewall.cpl</code> and press Enter.</li>
+<li>From the left-side menu, click <strong>Turn Windows Defender Firewall on or off</strong>.</li>
+<li>Select <strong>Turn off Windows Defender Firewall (not recommended)</strong> for both Private and Public networks.</li>
+<li>Click OK.</li>
+</ol>
+<p>(We will turn it back on once the process is complete.)</p>
+</section>
+
+<section class="step">
+<h2>Step-6: Run Docker</h2>
+<p>Now, open Docker Desktop from the Start Menu.</p>
+<p>Wait for a while until the Docker engine starts and its status changes to Running.</p>
+</section>
+
+<section class="step">
+<h2>Step-7: Set Up Technitium DNS</h2>
+<p>Now, we will configure the DNS server so that the STB's traffic can be redirected.</p>
+<ol>
+<li>Open your laptop's browser and visit <code>http://localhost:5380</code>. This is the Technitium console.</li>
+<li>Go to <strong>Zones</strong> in the menu and click <strong>Add Zone</strong>.</li>
+<li>Enter the following details:
+<ul><li>Zone Name: <code>jio.com</code></li><li>Zone Type: Primary Zone</li></ul></li>
+<li>Now, click on <code>jio.com</code> from the list and press the <strong>Add Record</strong> button.</li>
+<li>Enter the following details:
+<ul><li>Name: <code>acs.oss</code></li><li>Type: A</li><li>IP Address: Enter the same laptop IPv4 address that you noted in Step 3.</li></ul></li>
+<li>Save the record.</li>
+</ol>
+<p>Finally, check once that the <code>jio.com</code> zone is showing as Enabled.</p>
+</section>
+
+<section class="step">
+<h2>Step-8: Deploy TLS Containers (Temporary Internet Required)</h2>
+<p>Now, we will deploy the TLS containers. When you run this command, Docker will download some required files from the Internet. Therefore, we need to temporarily enable the Internet connection.</p>
+<h3>1. Turn the Internet ON</h3>
+<p>Reconnect the Internet cable (WAN) that you disconnected in Step 5 so that your laptop gets an Internet connection again.</p>
+<h3>2. Open the TLS Folder</h3>
+<ol>
+<li>Open File Explorer on your laptop.</li>
+<li>Navigate to the <code>sideload-jiostb/tls</code> folder.</li>
+<li>Click on the Address Bar at the top of the folder window (where the folder path is displayed).</li>
+<li>Type <code>cmd</code> and press Enter.</li>
+</ol>
+<p>This will open Command Prompt directly inside that folder.</p>
+<h3>3. Run the Docker Command</h3>
+<p>In the Command Prompt window, type the following command and press Enter:</p>
+<pre><code>docker compose up -d</code></pre>
+<h3>4. Turn the Internet OFF Again (Important)</h3>
+<p>As soon as the command finishes and the files have been downloaded and the containers have been set up, immediately disconnect the Internet cable from your router again.</p>
+<p>The remaining exploit process will work locally without an Internet connection.</p>
+</section>
+
+<section class="step">
+<h2>Step-9: Start the Proxy Listener</h2>
+<p>Since our box belongs to the JHSC200 series (JioOS 2.0), it performs strict CA certificate validation checks and rejects the default certificate.</p>
+<p>Therefore, we need to run a special script.</p>
+<ol>
+<li>Go back to the main <code>sideload-jiostb</code> folder on your laptop.</li>
+<li>Open Git Bash inside that folder.</li>
+<li>Enter the following certificate-related command in Git Bash and press Enter:</li>
+</ol>
+<pre><code>./jhs/run_acs.sh</code></pre>
+<div class="note"><strong>Note:</strong> This script will automatically generate an eMudhra certificate and launch the proxy. Keep this terminal window open. Do not close it!</div>
+</section>
+
+<section class="step">
+<h2>Step-10: Git Bash and Health Check (Testing the Setup)</h2>
+<p>Before doing anything on the TV, we will check whether the laptop setup is working correctly.</p>
+<ol>
+<li>Go back to the main <code>sideload-jiostb</code> folder on your laptop.</li>
+<li>Right-click on an empty space inside the folder.</li>
+<li>Click <strong>Show more options</strong>.</li>
+<li>Select <strong>Open Git Bash here</strong>.</li>
+</ol>
+<p>(This step is optional but highly recommended.)</p>
+<p>In Git Bash, enter the following commands one by one:</p>
+<pre><code>python doctor.py --quick</code></pre>
+<pre><code>python doctor.py --simulate</code></pre>
+<div class="note"><strong>Note:</strong> The <code>--simulate</code> command sends a fake request to check whether your proxy and GenieACS are working properly and whether the entire setup is functioning correctly.</div>
+</section>
+
+<section class="step">
+<h2>Step-11: Cold Power-Cycle the STB</h2>
+<p>Now, we need to restart the STB so that it can connect to our setup.</p>
+<ol>
+<li>Unplug the main power plug of your Jio STB directly from the wall socket.</li>
+<li>Do not turn it off using the TV remote.</li>
+<li>Wait for 5 to 6 seconds after unplugging it.</li>
+<li>Plug it back in and allow the STB to boot completely.</li>
+</ol>
+</section>
+
+<section class="step">
+<h2>Step-12: Execute Stage 1</h2>
+<p>Before proceeding, make sure that Docker, Technitium DNS, and the proxy listener (which we left running in Step 9) are all active.</p>
+<h3>1. Check Connected Devices</h3>
+<p>First, enter the following command in Git Bash and press Enter:</p>
+<pre><code>./stage1.sh --list-devices</code></pre>
+<p>After running this command, two options will appear in the list:</p>
+<ul><li>1: Test Device</li><li>2: Jio STB</li></ul>
+<h3>2. Run Only the Required Payload</h3>
+<p>Now, execute the following command:</p>
+<pre><code>./stage1.sh --tasks-only</code></pre>
+<p>When the command prompts you to select a model, type <code>2</code> and press Enter to select the Jio STB.</p>
+</section>
+
+<section class="step">
+<h2>Step-13: Second Cold Power-Cycle and ADB Connection (My Real Experience)</h2>
+<p>The Jio STB can take hours to connect automatically in the background. Therefore, to connect ADB immediately, we need to force-restart the STB one more time (for the second time).</p>
+<h3>1. Second Cold Power-Cycle</h3>
+<p>Unplug the STB's main power plug from the wall socket. Wait for 5–6 seconds, then plug it back in and let it boot completely.</p>
+<p>(Remember, we are repeating this step for the second time. Do not turn it off using the TV remote.)</p>
+<h3>2. First ADB Command</h3>
+<p>As soon as the box turns on, without waiting, manually enter this command in Git Bash and press Enter:</p>
+<pre><code>adb connect &lt;YOUR_STB_IP&gt;:5555</code></pre>
+<p>(Replace it with your actual STB IP address.)</p>
+<h3>3. Allow the TV Pop-up</h3>
+<p>As soon as you enter the command, an <strong>"Allow USB Debugging?"</strong> pop-up will immediately appear on your TV screen.</p>
+<p>Using your remote:</p>
+<ul><li>Tick <strong>Always allow from this computer</strong>.</li><li>Select OK.</li></ul>
+<p>If your PC displays <code>failed to authenticate</code>, do not panic. This is normal.</p>
+<h3>4. Second ADB Command (Important)</h3>
+<p>After selecting OK on the TV, run the exact same command again in Git Bash:</p>
+<pre><code>adb connect &lt;YOUR_STB_IP&gt;:5555</code></pre>
+<p>Now, it should display:</p>
+<pre><code>connected to IP:5555</code></pre>
+<h3>5. Verify the Connection</h3>
+<p>Once completed, enter the following command in Git Bash:</p>
+<pre><code>adb devices</code></pre>
+<p>If your device appears in the list with the status <code>device</code>, it means your setup has been successfully completed!</p>
+<div class="note"><strong>Important Note:</strong> It is not necessary that the ADB connection will work on the very first attempt. If you get an error after entering the command or the TV pop-up does not appear, do not panic. You may need to perform a cold start (unplugging and reconnecting the power plug) 2–3 times until the connection becomes successful.</div>
+</section>
+
+<section class="step">
+<h2>Step-15: Teardown and Restore Everything to Normal</h2>
+<p>Once the ADB connection is established and your jailbreak setup is complete, it is important to restore everything to its normal state.</p>
+<h3>1. Stop the Proxy Script</h3>
+<p>Go to the terminal window where <code>run_acs.sh</code> is running.</p>
+<p>Click inside that window and press:</p>
+<pre><code>Ctrl + C</code></pre>
+<p>This will stop the running proxy script.</p>
+<h3>2. Stop Docker Containers</h3>
+<p>Open Git Bash and run the following command to stop the Docker containers:</p>
+<pre><code>docker compose down</code></pre>
+<h3>3. Turn the Router Internet Back ON</h3>
+<p>Reconnect the main Internet cable that you disconnected from your router in Step 10.</p>
+<h3>4. Turn Windows Defender Firewall Back ON</h3>
+<ol><li>Press <code>Win + R</code>.</li><li>Type <code>firewall.cpl</code>.</li><li>Open <strong>Turn Windows Defender Firewall on or off</strong>.</li><li>Turn Windows Defender Firewall back ON.</li></ol>
+<h3>5. Verification</h3>
+<p>Your STB and laptop should now have their Internet connections working again.</p>
+</section>
+
+<section class="step">
+<h2>Step-15: Edit and Run the Post-Setup Script</h2>
+<p>To complete the post-setup process, we need to run a script. However, before running it, we must enter the actual IP address of our Jio STB because the script already contains a default IP address.</p>
+<ol>
+<li>Go back to the main <code>sideload-jiostb</code> folder on your laptop.</li>
+<li>Open the folder named <code>jhs</code>.</li>
+<li>Find the script file named <code>jhs_stage1.sh</code>.</li>
+<li>Right-click on it and open it with Notepad.</li>
+<li>Inside the file, you will find <code>STB_IP</code>.</li>
+<li>Replace the default IP address with the actual IP address of your Jio STB.</li>
+<li>Save the file using <code>Ctrl + S</code> and close Notepad.</li>
+</ol>
+<p>Now, return to your Git Bash terminal (where the main folder was opened) and enter the following command:</p>
+<pre><code>./jhs/jhs_stage1.sh --post-setup</code></pre>
+<p>After running this command, your post-setup will be completed successfully, and the entire jailbreak process will be finished!</p>
+</section>
+
+<section class="step">
+<h2>Step-16: Install Apps (APK) Through ADB</h2>
+<p>Since the built-in package installer UI is disabled on the Jio STB, you will need to install Android TV APKs directly from your PC.</p>
+<h3>1. Connect ADB</h3>
+<p>If your PC is not already connected to the STB, run the following command in Git Bash:</p>
+<pre><code>adb connect &lt;STB_IP_ADDRESS&gt;:5555</code></pre>
+<h3>2. Install an APK</h3>
+<p>To sideload (install) any Android TV app from your PC, run the following command:</p>
+<pre><code>adb install "C:\path\to\your\app.apk"</code></pre>
+<p>(Replace the path inside the quotation marks with the actual location/path of your APK file.)</p>
+<p>Once the installation is complete, the app will immediately appear inside the Monet Launcher of your STB!</p>
+</section>
+</main>
+<footer>End of guide.</footer>
+</body>
+</html>
